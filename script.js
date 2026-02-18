@@ -1,184 +1,184 @@
-// Main JavaScript file
-document.addEventListener('DOMContentLoaded', function () {
-    console.log('Website loaded successfully!');
-
-    // Navbar scroll effect
-    const navbar = document.getElementById('navbar');
-    const hamburger = document.getElementById('hamburger');
-    const navMenu = document.getElementById('navMenu');
-    const navLinks = document.querySelectorAll('.nav-link');
-
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
-
-    // Mobile menu toggle
-    hamburger.addEventListener('click', () => {
-        hamburger.classList.toggle('active');
-        navMenu.classList.toggle('active');
-    });
-
-    // Close mobile menu when clicking on a link
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            navMenu.classList.remove('active');
-        });
-    });
-
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                const offsetTop = target.offsetTop - 80;
-                window.scrollTo({
-                    top: offsetTop,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-
-    // Intersection Observer for fade-in animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+document.addEventListener("DOMContentLoaded", () => {
+    const ontologyData = {
+        nodes: [
+            { id: "owl:Thing", group: 1 },
+            { id: "EffectsOnEnvironmentAndEconomy", group: 1 },
+            { id: "EcoFriendly", group: 1 },
+            { id: "ReduceWaste", group: 1 },
+            { id: "SaveRessources", group: 1 },
+            { id: "ReduceSize", group: 1 },
+            { id: "RecycledProduct", group: 1 },
+            { id: "FromGlass", group: 2 },
+            { id: "GlassBottles", group: 2 },
+            { id: "FromMetal", group: 2 },
+            { id: "AutomobileParts", group: 2 },
+            { id: "Electronics", group: 2 },
+            { id: "ToolsAndHardware", group: 2 },
+            { id: "FromPaper", group: 2 },
+            { id: "CartonBoxes", group: 2 },
+            { id: "RecycledBags", group: 2 },
+            { id: "FromPlastic", group: 2 },
+            { id: "PackagingMaterials", group: 2 },
+            { id: "RecyclingTechnique", group: 3 },
+            { id: "AvoidContamination", group: 3 },
+            { id: "Bleaching", group: 3 },
+            { id: "Classification", group: 3 },
+            { id: "Collection", group: 3 },
+            { id: "De-inking", group: 3 },
+            { id: "Melting", group: 3 },
+            { id: "Papermaking", group: 3 },
+            { id: "Reformation", group: 3 },
+            { id: "Repurpose", group: 3 },
+            { id: "Reuse", group: 3 },
+            { id: "Shredding", group: 3 },
+            { id: "Solidification", group: 3 },
+            { id: "TypeOfTrash", group: 4 },
+            { id: "Glass", group: 4 },
+            { id: "Metal", group: 4 },
+            { id: "Paper", group: 4 },
+            { id: "Plastic", group: 4 }
+        ],
+        links: [
+            { source: "EffectsOnEnvironmentAndEconomy", target: "EcoFriendly" },
+            { source: "EffectsOnEnvironmentAndEconomy", target: "ReduceWaste" },
+            { source: "EffectsOnEnvironmentAndEconomy", target: "SaveRessources" },
+            { source: "EffectsOnEnvironmentAndEconomy", target: "ReduceSize" },
+            { source: "EcoFriendly", target: "RecycledProduct" },
+            { source: "RecycledProduct", target: "FromGlass" },
+            { source: "RecycledProduct", target: "FromMetal" },
+            { source: "RecycledProduct", target: "FromPaper" },
+            { source: "RecycledProduct", target: "FromPlastic" },
+            { source: "FromGlass", target: "GlassBottles" },
+            { source: "FromMetal", target: "AutomobileParts" },
+            { source: "FromMetal", target: "Electronics" },
+            { source: "FromMetal", target: "ToolsAndHardware" },
+            { source: "FromPaper", target: "CartonBoxes" },
+            { source: "FromPaper", target: "RecycledBags" },
+            { source: "FromPlastic", target: "PackagingMaterials" },
+            { source: "FromPlastic", target: "RecycledBags" },
+            { source: "RecyclingTechnique", target: "AvoidContamination" },
+            { source: "RecyclingTechnique", target: "Bleaching" },
+            { source: "RecyclingTechnique", target: "Classification" },
+            { source: "RecyclingTechnique", target: "Collection" },
+            { source: "RecyclingTechnique", target: "De-inking" },
+            { source: "RecyclingTechnique", target: "Melting" },
+            { source: "RecyclingTechnique", target: "Papermaking" },
+            { source: "RecyclingTechnique", target: "Reformation" },
+            { source: "RecyclingTechnique", target: "Repurpose" },
+            { source: "RecyclingTechnique", target: "Reuse" },
+            { source: "RecyclingTechnique", target: "Shredding" },
+            { source: "RecyclingTechnique", target: "Solidification" },
+            { source: "TypeOfTrash", target: "Glass" },
+            { source: "TypeOfTrash", target: "Metal" },
+            { source: "TypeOfTrash", target: "Paper" },
+            { source: "TypeOfTrash", target: "Plastic" }
+        ]
     };
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, observerOptions);
+    const width = 800;
+    const height = 600;
 
-    // Observe all elements with fade-in classes
-    const fadeElements = document.querySelectorAll('.fade-in-up, .fade-in-left, .fade-in-right');
-    fadeElements.forEach(el => observer.observe(el));
+    const svg = d3.select("#graph").append("svg")
+        .attr("width", width)
+        .attr("height", height);
 
-    // Contact form handling
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function (e) {
-            e.preventDefault();
+    const simulation = d3.forceSimulation(ontologyData.nodes)
+        .force("link", d3.forceLink(ontologyData.links).id(d => d.id))
+        .force("charge", d3.forceManyBody().strength(-400))
+        .force("center", d3.forceCenter(width / 2, height / 2));
 
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                subject: document.getElementById('subject').value,
-                message: document.getElementById('message').value
-            };
+    const link = svg.append("g")
+        .attr("class", "links")
+        .selectAll("line")
+        .data(ontologyData.links)
+        .enter().append("line")
+        .attr("stroke-width", 2);
 
-            console.log('Form submitted:', formData);
+    const node = svg.append("g")
+        .attr("class", "nodes")
+        .selectAll("circle")
+        .data(ontologyData.nodes)
+        .enter().append("circle")
+        .attr("r", 10)
+        .attr("fill", d => d3.schemeCategory10[d.group])
+        .call(d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended));
 
-            // Show success message
-            alert('Vielen Dank für deine Nachricht! Ich werde mich bald bei dir melden.');
+    const label = svg.append("g")
+        .attr("class", "labels")
+        .selectAll("text")
+        .data(ontologyData.nodes)
+        .enter().append("text")
+        .attr("dy", -3)
+        .text(d => d.id);
 
-            // Reset form
-            contactForm.reset();
-        });
+    simulation
+        .nodes(ontologyData.nodes)
+        .on("tick", ticked);
+
+    simulation.force("link")
+        .links(ontologyData.links);
+
+    function ticked() {
+        link
+            .attr("x1", d => d.source.x)
+            .attr("y1", d => d.source.y)
+            .attr("x2", d => d.target.x)
+            .attr("y2", d => d.target.y);
+
+        node
+            .attr("cx", d => d.x)
+            .attr("cy", d => d.y);
+
+        label
+            .attr("x", d => d.x)
+            .attr("y", d => d.y);
     }
 
-    // Portfolio item hover effect enhancement
-    const portfolioItems = document.querySelectorAll('.portfolio-item');
-    portfolioItems.forEach(item => {
-        item.addEventListener('mouseenter', function () {
-            this.style.transform = 'translateY(-8px)';
-        });
-
-        item.addEventListener('mouseleave', function () {
-            this.style.transform = 'translateY(0)';
-        });
-    });
-
-    // Service cards hover effect
-    const serviceCards = document.querySelectorAll('.service-card');
-    serviceCards.forEach(card => {
-        card.addEventListener('mouseenter', function () {
-            this.style.borderColor = 'var(--color-accent-2)';
-        });
-
-        card.addEventListener('mouseleave', function () {
-            this.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-        });
-    });
-
-    // Parallax effect for hero background
-    window.addEventListener('scroll', () => {
-        const scrolled = window.pageYOffset;
-        const heroBackground = document.querySelector('.hero-bg-image');
-        if (heroBackground) {
-            heroBackground.style.transform = `translateY(${scrolled * 0.5}px)`;
-        }
-    });
-
-    // Add active state to navigation links based on scroll position
-    const sections = document.querySelectorAll('section[id]');
-
-    function highlightNavigation() {
-        const scrollY = window.pageYOffset;
-
-        sections.forEach(section => {
-            const sectionHeight = section.offsetHeight;
-            const sectionTop = section.offsetTop - 100;
-            const sectionId = section.getAttribute('id');
-
-            if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-                document.querySelector(`.nav-link[href="#${sectionId}"]`)?.classList.add('active');
-            } else {
-                document.querySelector(`.nav-link[href="#${sectionId}"]`)?.classList.remove('active');
-            }
-        });
+    function dragstarted(event, d) {
+        if (!event.active) simulation.alphaTarget(0.3).restart();
+        d.fx = d.x;
+        d.fy = d.y;
     }
 
-    window.addEventListener('scroll', highlightNavigation);
+    function dragged(event, d) {
+        d.fx = event.x;
+        d.fy = event.y;
+    }
 
-    // Add CSS for active nav link
-    const style = document.createElement('style');
-    style.textContent = `
-        .nav-link.active {
-            color: var(--color-accent);
-        }
-        .nav-link.active::after {
-            width: 100%;
-        }
-    `;
-    document.head.appendChild(style);
+    function dragended(event, d) {
+        if (!event.active) simulation.alphaTarget(0);
+        d.fx = null;
+        d.fy = null;
+    }
 
-    // Cursor effect for portfolio items
-    portfolioItems.forEach(item => {
-        item.addEventListener('mousemove', (e) => {
-            const rect = item.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-
-            const rotateX = (y - centerY) / 20;
-            const rotateY = (centerX - x) / 20;
-
-            item.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
-        });
-
-        item.addEventListener('mouseleave', () => {
-            item.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
-        });
+    // Populate ontology list
+    const ontologyList = document.getElementById("ontology-list");
+    ontologyData.nodes.forEach(node => {
+        const li = document.createElement("li");
+        li.textContent = node.id;
+        ontologyList.appendChild(li);
     });
 
-    // Loading animation
-    window.addEventListener('load', () => {
-        document.body.style.opacity = '0';
-        setTimeout(() => {
-            document.body.style.transition = 'opacity 0.5s ease';
-            document.body.style.opacity = '1';
-        }, 100);
+    // SPARQL query execution
+    document.getElementById("run-query").addEventListener("click", () => {
+        const query = document.getElementById("sparql-query").value;
+        const endpoint = "https://dbpedia.org/sparql"; // Example SPARQL endpoint
+
+        fetch(endpoint + "?query=" + encodeURIComponent(query) + "&format=json")
+            .then(response => response.json())
+            .then(data => {
+                const results = data.results.bindings;
+                const resultDiv = document.getElementById("query-results");
+                resultDiv.innerHTML = "<h3>Query Results:</h3>";
+                results.forEach(result => {
+                    const p = document.createElement("p");
+                    p.textContent = result.class.value;
+                    resultDiv.appendChild(p);
+                });
+            })
+            .catch(error => console.error("Error running query:", error));
     });
 });

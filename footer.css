@@ -1,0 +1,22 @@
+/* Footer */
+.footer {
+    background: var(--color-bg-secondary);
+    padding: 2rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-logo {
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+
+.footer-text {
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+}
